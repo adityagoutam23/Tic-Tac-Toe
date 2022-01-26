@@ -131,6 +131,58 @@ bool checker(char board[5][11], int pos, char X_O, char comp){
     }
 }
 
+bool winner(char board[5][11]){
+    int flag = 0;
+    for(int i=0; i<5; i=i+2){
+        int j=1;
+        if(board[i][j]=='X'&&board[i][j+4]=='X'&&board[i][j+8]=='X'){
+            cout<<"\nX is winner\n";
+            return true;
+            break;
+        }
+        else if(board[i][j]=='O'&&board[i][j+4]=='O'&&board[i][j+8]=='O'){
+            cout<<"\nO is winner\n";
+            return true;
+            break;
+        }
+        else{
+            continue;
+        }
+    }
+    for(int j=1; j<11; j=j+4){
+        int i=0;
+        if(board[i][j]=='X'&&board[i+2][j]=='X'&&board[i+4][j]=='X'){
+            cout<<"\nX is winner\n";
+            return true;
+            break;
+        }
+        else if(board[i][j]=='O'&&board[i+2][j]=='O'&&board[i+4][j]=='O'){
+            cout<<"\nO is winner\n";
+            return true;
+            break;
+        }
+        else{
+            continue;
+        }
+    }
+    if(board[0][1]=='X'&&board[2][5]=='X'&&board[4][9]=='X'){
+        cout<<"\nX is winner\n";
+        return true;
+    }
+    if(board[0][1]=='O'&&board[2][5]=='O'&&board[4][9]=='O'){
+        cout<<"\nO is winner\n";
+        return true;
+    }
+    if(board[0][9]=='X'&&board[2][5]=='X'&&board[4][1]=='X'){
+        cout<<"\nX is winner\n";
+        return true;
+    }
+    if(board[0][9]=='O'&&board[2][5]=='O'&&board[4][1]=='O'){
+        cout<<"\nO is winner\n";
+        return true;
+    }
+}
+
 void random_place_X_O(char board[5][11], char X_O, char comp){
     int choice;
     bool checked_value;
@@ -142,9 +194,11 @@ void random_place_X_O(char board[5][11], char X_O, char comp){
     if(checked_value==false){
         random_place_X_O(board, X_O, comp);
     }
-
 }
 
+void level_impossible(char board[5][11]){
+
+}
 
 
 int main(){
@@ -181,6 +235,12 @@ int main(){
                 random_place_X_O(board, X_O, comp);
                 cout<<endl;
             }
+            check_result = winner(board);
+            if(check_result==true){
+                flag = 1;
+                break;
+            }
+            else continue;
         }
     }
     else{
@@ -193,7 +253,17 @@ int main(){
                 place_X_O(board, X_O);
                 cout<<endl;
             }
+            check_result = winner(board);
+            if(check_result==true){
+                flag = 1;
+                break;
+            }
+            else continue;
         }
+    }
+
+    if(flag==0){
+        cout<<"It's a DRAW\n";
     }
 
     return 0;
