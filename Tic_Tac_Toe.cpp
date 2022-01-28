@@ -200,71 +200,154 @@ void level_impossible(char board[5][11]){
 
 }
 
+int first_turn(char board[5][11], char X_O, char comp, int level){
+    bool check_result;
+    int flag = 0;
+    for(int i=0; i<9 ;i++){
+        if(i==0 || i%2==0){
+            if(level==1){
+                place_X_O(board, X_O);
+            }
+            else if(level==2){
+                cout<<endl<<"Player 1 your turn\n";
+                place_X_O(board, X_O);
+            }
+            
+            cout<<endl;
+        }
+        else{
+            if(level==1){
+                random_place_X_O(board, X_O, comp);
+            }
+            else if(level==2){
+                cout<<endl<<"Player 2 your turn\n";
+                place_X_O(board, comp);
+            }
+            else cout<<"Something is wrong";
+            cout<<endl;
+        }
+        check_result = winner(board);
+        if(check_result==true){
+            flag = 1;
+            break;
+        }
+        else continue;
+    }
+    return flag;
+}
+
+int second_turn(char board[5][11], char X_O, char comp, int level){
+    bool check_result;
+    int flag =0;
+    for(int i=0; i<9 ;i++){
+        if(i==0 || i%2==0){
+            if(level==1){
+                random_place_X_O(board, X_O, comp);
+            }
+            else if(level==2){
+                cout<<endl<<"Player 2 your turn\n";
+                place_X_O(board, comp);
+            }
+            cout<<endl;
+        }
+        else{
+            if(level==1){
+                place_X_O(board, X_O);
+            }
+            else if(level==2){
+                cout<<endl<<"Player 1 your turn\n";
+                place_X_O(board, X_O);
+            }
+            cout<<endl;
+        }
+        check_result = winner(board);
+        if(check_result==true){
+            flag = 1;
+            break;
+        }
+        else continue;
+    }
+    return flag;
+}
+
 
 int main(){
 
-    bool check_result;
-    int flag = 0 ;
+    int flag;
+    int level;
     char X_O, comp;
     string play_first;
     srand (time(NULL));
     system("clear");
-    
+
     display_board(board);
 
-    cout<<"Play as X or O: ";
-    cin>>X_O;
+    cout<<endl<<"1. Play with computer"<<endl;
+    cout<<endl<<"2. Play with friend"<<endl;
+    cout<<endl<<"3. Impossible"<<endl;
+    cout<<endl<<"Please select your mode: ";
+    cin>>level;
+    switch(level){
+        case 1: {
+                cout<<"\nPlay as X or O: ";
+                cin>>X_O;
 
-    if(X_O=='X'){
-        comp = 'O';
-    }
-    if(X_O=='O'){
-        comp = 'X';
-    }
+                if(X_O=='X'){
+                    comp = 'O';
+                }
+                if(X_O=='O'){
+                    comp = 'X';
+                }
 
-    cout<<"\nDo you want to play first? ";
-    cin>>play_first;
+                cout<<"\nDo you want to play first? ";
+                cin>>play_first;
 
-    if(play_first=="y"||play_first=="yes"||play_first=="Y"||play_first=="YES"||play_first=="1"){
-        for(int i=0; i<9 ;i++){
-            if(i==0 || i%2==0){
-                place_X_O(board, X_O);
-                cout<<endl;
-            }
-            else{
-                random_place_X_O(board, X_O, comp);
-                cout<<endl;
-            }
-            check_result = winner(board);
-            if(check_result==true){
-                flag = 1;
-                break;
-            }
-            else continue;
+                if(play_first=="y"||play_first=="yes"||play_first=="Y"||play_first=="YES"||play_first=="1"){
+                    flag = first_turn(board, X_O, comp, level);
+                }
+                else{
+                    flag = second_turn(board,X_O, comp, level);
+                }
+
+                if(flag==0){
+                    cout<<"It's a DRAW\n";
+                }
         }
-    }
-    else{
-        for(int i=0; i<9 ;i++){
-            if(i==0 || i%2==0){
-                random_place_X_O(board, X_O, comp);
-                cout<<endl;
-            }
-            else{
-                place_X_O(board, X_O);
-                cout<<endl;
-            }
-            check_result = winner(board);
-            if(check_result==true){
-                flag = 1;
-                break;
-            }
-            else continue;
+        break;
+
+        case 2: {
+                cout<<"\nPlayer 1 play as X or O: ";
+                cin>>X_O;
+                cout<<"\nPlayer 2 play as X or O: ";
+                cin>>comp;
+
+                cout<<"\nWhich player wants to play first? ";
+                cin>>play_first;
+
+                string temp(1, X_O);
+
+                if(play_first=="first"||play_first=="1"||play_first=="first player"||play_first=="player 1"||play_first==temp){
+                    flag = first_turn(board, X_O, comp, level);
+                }
+                else{
+                    flag = second_turn(board,X_O, comp, level);
+                }
+
+                if(flag==0){
+                    cout<<"It's a DRAW\n";
+                }
+
         }
+        break;
+
+        case 3: {
+
+        }
+        break;
+
+        default: cout<<"Something is not right:(";
     }
 
-    if(flag==0){
-        cout<<"It's a DRAW\n";
-    }
 
     return 0;
 }
