@@ -1,7 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
-#include<cctype>
 
 using namespace std;
 
@@ -135,6 +134,7 @@ bool checker(char board[5][11], int pos){
 
         default: cout<<"Something is wrong!!";
     }
+    return 0;
 }
 
 char winner(char board[5][11]){
